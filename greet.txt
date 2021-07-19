@@ -1,2 +1,6 @@
 Welcome to remote!!
+<<<<<<< HEAD
 from local repo
+=======
+changed in remote..
+>>>>>>> 8c11a25f50ba7edc0061383cb5b527083f9dcd50
