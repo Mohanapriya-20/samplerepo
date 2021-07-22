@@ -60,4 +60,10 @@ join movie_genres mg
 on m.mov_id =mg.mov_id 
 join  genres g
 on mg.gen_id=g.gen_id;
+8.select mov_title, mov_year, gen_title, dir_fname, dir_lname
+from movie
+natural join movie_genres
+natural join genres
+natural join movie_direction
+natural join director;
 
