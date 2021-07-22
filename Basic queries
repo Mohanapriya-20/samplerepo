@@ -54,3 +54,10 @@ join genres g
 on mg.gen_id =g.gen_id
 GROUP BY d.dir_fname, d.dir_lname,g.gen_title 
 ORDER BY d.dir_fname,d.dir_lname;
+7.select  m.mov_title ,m.mov_year,g.gen_title
+from movie m
+join movie_genres mg
+on m.mov_id =mg.mov_id 
+join  genres g
+on mg.gen_id=g.gen_id;
+
