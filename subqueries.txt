@@ -82,6 +82,28 @@ select * from orders where purch_amt < any (select max(purch_amt) from orders a,
 26. Write a query to display only those customers whose grade are, in fact, higher than every customer in New York. 
 select * from customer where grade > all(select grade from customer where city='New York');
 
+27.write a query in sql to find the name, city, and the total sum of orders amount a salesman collects. Salesman should belong to the cities where any of the customer belongs.
+SELECT salesman.name, salesman.city, subquery1.total_amt FROM 
+salesman, (SELECT salesman_id, SUM(orders.purch_amt) AS total_amt 
+FROM orders GROUP BY salesman_id) subquery1 WHERE subquery1.salesman_id = salesman.salesman_id AND
+salesman.city IN (SELECT DISTINCT city FROM customer);
+
+28. Write a query to get all the information for those customers whose grade is not as the grade of customer who belongs to the city London.
+select * from customer where grade <> any(select grade from customer where city='London');
+
+
+29. Write a query to find all those customers whose grade are not as the grade, belongs to the city Paris.
+SELECT * FROM customer WHERE grade NOT IN (SELECT grade FROM customer WHERE city='Paris');
+
+30. Write a query to find all those customers who hold a different grade than any customer of the city Dallas.
+select * from customer where grade not in(select grade from customer where city='Dallas');
+
+31. Write a SQL query to find the average price of each manufacturer's products along with their name
+SELECT AVG(pro_price) AS "Average Price", 
+   company_mast.com_name As "Company"
+   FROM item_mast, company_mast
+   WHERE item_mast.pro_com= company_mast.com_id
+   GROUP BY company_mast.com_name;
 
 
 
