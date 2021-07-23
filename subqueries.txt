@@ -35,3 +35,57 @@ select orders.*,customer.cust_name from orders ,customer  where orders.customer_
 11.Write a query to find the name and numbers of all salesmen who had more than one customer. 
 SELECT salesman_id,name FROM salesman a WHERE 1 < (SELECT COUNT(*) FROM customer WHERE salesman_id=a.salesman_id);
 
+12. Write a query to find all orders with order amounts which are above-average amounts for their customers.
+SELECT * FROM orders a WHERE purch_amt > (SELECT AVG(purch_amt) FROM orders b WHERE b.customer_id = a.customer_id);
+
+13. Write a queries to find all orders with order amounts which are on or above-average amounts for their customers.
+SELECT * FROM orders a WHERE purch_amt >= (SELECT AVG(purch_amt) FROM orders b WHERE b.customer_id = a.customer_id);
+
+14. Write a query to find the sums of the amounts from the orders table, grouped by date, eliminating all those dates where the sum was not at least 1000.00 above the maximum order amount for that date.
+select ord_date,sum(purch_amt) from orders  a group by ord_date
+having sum(purch_amt) >(SELECT 1000.00 + MAX(purch_amt) FROM orders b WHERE a.ord_date = b.ord_date);
+
+15. Write a query to extract all data from the customer table if and only if one or more of the customers in the customer table are located in London. 
+select customer_id,cust_name, city FROM customer WHERE EXISTS (select count(*) from customer where city='London'); 
+
+16. Write a query to find the salesmen who have multiple customers.
+SELECT * FROM salesman WHERE salesman_id IN (SELECT DISTINCT salesman_id FROM customer a WHERE EXISTS (SELECT * FROM customer b WHERE b.salesman_id=a.salesman_id AND b.cust_name<>a.cust_name));
+
+17. Write a query to find all the salesmen who worked for only one customer.
+SELECT * FROM salesman WHERE salesman_id IN (SELECT DISTINCT salesman_id FROM customer a WHERE NOT EXISTS (SELECT * FROM customer b WHERE b.salesman_id=a.salesman_id AND b.cust_name<>a.cust_name));
+
+18. Write a query that extract the rows of all salesmen who have customers with more than one orders.
+SELECT * FROM salesman a WHERE EXISTS (SELECT * FROM customer b WHERE a.salesman_id=b.salesman_id AND 1< (SELECT COUNT (*) FROM orders WHERE orders.customer_id = b.customer_id));
+
+19. Write a query to find salesmen with all information who lives in the city where any of the customers lives.
+select * from salesman where city = any(select city from customer);
+select * from salesman where city in(select city from customer);
+
+20. Write a query to find all the salesmen for whom there are customers that follow them. 
+select * from salesman where city in(select city from customer);
+
+21. Write a query to display the salesmen which name are alphabetically lower than the name of the customers.
+SELECT * FROM salesman a WHERE EXISTS (SELECT * FROM CUSTOMER b WHERE  a.name  < b.cust_name);
+
+22. Write a query to display the customers who have a greater gradation than any customer who belongs to the alphabetically lower than the city New York.
+SELECT * FROM customer WHERE grade > ANY (SELECT grade FROM CUSTOMER WHERE  city < 'New York');
+
+23.Write a query to display all the orders that had amounts that were greater than at least one of the orders from September 10th 2012.
+select * from orders where purch_amt > any(select purch_amt  from orders where ord_date='2012-09-10');
+
+24. Write a query to find all orders with an amount smaller than any amount for a customer in London. (Using ANY keyword)
+SELECT * FROM orders WHERE purch_amt < ANY (SELECT purch_amt FROM orders a, customer b WHERE  a.customer_id=b.customer_id AND b.city='London');
+
+25.Write a query to display all orders with an amount smaller than the maximum amount for a customer in London.
+select * from orders where purch_amt < any (select max(purch_amt) from orders a, customer b where a.customer_id=b.customer_id and b.city='London');
+
+26. Write a query to display only those customers whose grade are, in fact, higher than every customer in New York. 
+select * from customer where grade > all(select grade from customer where city='New York');
+
+
+
+
+
+
+
+
